@@ -1,8 +1,8 @@
-# views.py
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes, renderer_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from django.contrib.auth.models import User
 from .models import ExpiringToken, PlayerProfile
@@ -10,9 +10,9 @@ from .serializers import UserSerializer
 from uuid import uuid4
 from . import models
 
-
 # Registrierung eines neuen Benutzers und Erstellen eines Tokens
 @api_view(["POST"])
+@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def register_user(request):
     print("register funktion called")
     serializer = UserSerializer(data=request.data)
@@ -37,6 +37,7 @@ def register_user(request):
 
 # Benutzer-Login und Token erstellen
 @api_view(["POST"])
+@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def login_user(request):
     print("login funktion called")
     username = request.data.get('username')
@@ -51,7 +52,7 @@ def login_user(request):
                 token = ExpiringToken.objects.create(user=user)  # Erstelle einen neuen Token
         return Response({
             'token': token.key,
-            'uid': models.PlayerProfile.objects.get(user = user).uid,
+            'uid': models.PlayerProfile.objects.get(user=user).uid,
             'message': 'Login successful!'
         }, status=status.HTTP_200_OK)
     else:
@@ -61,6 +62,7 @@ def login_user(request):
 @api_view(["GET"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
+@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def get_ranking(request):
     print("ranking funktion called")
     players = PlayerProfile.objects.order_by('-high_score')
@@ -72,6 +74,7 @@ def get_ranking(request):
 @api_view(["POST"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
+@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def update_highscore(request):
     print("update_highscore funktion called")
     current_score = request.data.get('current_score', None)
@@ -79,7 +82,7 @@ def update_highscore(request):
     if current_score is None:
         return Response({"error": "No score provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-    player_profile =  models.PlayerProfile.objects.get(uid = uid)
+    player_profile = models.PlayerProfile.objects.get(uid=uid)
     if int(current_score) > player_profile.high_score:
         player_profile.high_score = current_score
         player_profile.save()
