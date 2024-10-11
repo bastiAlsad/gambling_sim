@@ -57,8 +57,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://bastifriedrich.eu.pythonanywhere.com",
-    
+    "*"
     ]
 
 ROOT_URLCONF = 'squarebrain.urls'

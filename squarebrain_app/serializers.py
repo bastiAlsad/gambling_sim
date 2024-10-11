@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
         PlayerProfile.objects.create(user=user)  
         return user
 
+
 class PlayerProfileSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
 
