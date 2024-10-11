@@ -101,10 +101,10 @@ if PRODUCTION:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
-            "NAME": "greatbot$database2",
-            "USER": "greatbot",
-            "PASSWORD": "gB!%99HtmZ??",
-            "HOST": "greatbot.mysql.eu.pythonanywhere-services.com",
+            "NAME": "bastifriedrich$default",
+            "USER": "bastifriedrich",
+            "PASSWORD": "afgerding2024",
+            "HOST": "bastifriedrich.mysql.eu.pythonanywhere-services.com",
             "PORT": "",
         }
     }
