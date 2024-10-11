@@ -21,8 +21,11 @@ def register_user(request):
         while models.PlayerProfile.objects.filter(uid=uid).exists():
               uid = str(uuid4())
         user = serializer.save()  
-        player_object = models.PlayerProfile.objects.get(user = user).uid = uid
-        player_object.save()
+        player_object = models.PlayerProfile.objects.get(user=user)  # Hole das PlayerProfile-Objekt
+        player_object.uid = uid  # Setze die UID
+        player_object.save()  # Speichere das Objekt
+
+
         token, created = ExpiringToken.objects.get_or_create(user=user)
         print(f"token: {token.key}")
         print(f"uid: {uid.key}")
