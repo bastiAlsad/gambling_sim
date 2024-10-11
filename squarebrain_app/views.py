@@ -14,6 +14,7 @@ from . import models
 # Registrierung eines neuen Benutzers und Erstellen eines Tokens
 @api_view(["POST"])
 def register_user(request):
+    print("register funktion called")
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         uid = str(uuid4())
@@ -23,6 +24,8 @@ def register_user(request):
         player_object = models.PlayerProfile.objects.get(user = user).uid = uid
         player_object.save()
         token, created = ExpiringToken.objects.get_or_create(user=user)
+        print(f"token: {token.key}")
+        print(f"uid: {uid.key}")
         return Response({
             'token': token.key,
             'uid': uid,
@@ -33,6 +36,7 @@ def register_user(request):
 # Benutzer-Login und Token erstellen
 @api_view(["POST"])
 def login_user(request):
+    print("login funktion called")
     username = request.data.get('username')
     password = request.data.get('password')
     user = User.objects.filter(username=username).first()
@@ -56,8 +60,10 @@ def login_user(request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def get_ranking(request):
+    print("ranking funktion called")
     players = PlayerProfile.objects.order_by('-high_score')
     player_data = [{'username': player.user.username, 'high_score': player.high_score} for player in players]
+    print(f"player_data: {player_data}")
     return Response(player_data, status=status.HTTP_200_OK)
 
 # Highscore-Update für eingeloggte Benutzer
@@ -65,6 +71,7 @@ def get_ranking(request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def update_highscore(request):
+    print("update_highscore funktion called")
     current_score = request.data.get('current_score', None)
     uid = request.data.get('uid', None)
     if current_score is None:
