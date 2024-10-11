@@ -25,7 +25,6 @@ def register_user(request):
         player_object.uid = uid  # Setze die UID
         player_object.save()  # Speichere das Objekt
 
-
         token, created = ExpiringToken.objects.get_or_create(user=user)
         print(f"token: {token.key}")
         print(f"uid: {uid.key}")
