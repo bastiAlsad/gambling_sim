@@ -27,7 +27,7 @@ def register_user(request):
 
         token, created = ExpiringToken.objects.get_or_create(user=user)
         print(f"token: {token.key}")
-        print(f"uid: {uid.key}")
+        print(f"uid: {uid}")
         return Response({
             'token': token.key,
             'uid': uid,
