@@ -99,7 +99,7 @@ if PRODUCTION:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
-            "NAME": "bastifriedrich$default",
+            "NAME": "bastifriedrich$gamblingsim",
             "USER": "bastifriedrich",
             "PASSWORD": "afgerding2024",
             "HOST": "bastifriedrich.mysql.eu.pythonanywhere-services.com",
