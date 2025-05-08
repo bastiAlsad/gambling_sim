@@ -6,7 +6,7 @@ from datetime import timedelta
 
 class PlayerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    high_score = models.IntegerField(default=0)
+    coins = models.IntegerField(default=10000)
     uid = models.CharField(default = "", max_length = 200)
 
     def __str__(self):

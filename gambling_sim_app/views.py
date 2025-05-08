@@ -58,7 +58,7 @@ def login_user(request):
     else:
         return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
 
-# Beispiel einer geschützten Funktion, um das Ranking zu erhalten
+
 @api_view(["GET"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -70,22 +70,19 @@ def get_ranking(request):
     print(f"player_data: {player_data}")
     return Response(player_data, status=status.HTTP_200_OK)
 
-# Highscore-Update für eingeloggte Benutzer
+# Update Coins Method
 @api_view(["POST"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
-def update_highscore(request):
-    print("update_highscore funktion called")
-    current_score = request.data.get('current_score', None)
+def update_coins(request):
+    coins_amount = request.data.get('coins_amount', None)
     uid = request.data.get('uid', None)
-    if current_score is None:
+    if coins_amount is None:
         return Response({"error": "No score provided"}, status=status.HTTP_400_BAD_REQUEST)
 
     player_profile = models.PlayerProfile.objects.get(uid=uid)
-    if int(current_score) > player_profile.high_score:
-        player_profile.high_score = current_score
-        player_profile.save()
-        return Response({"message": "High score updated"}, status=status.HTTP_200_OK)
-    else:
-        return Response({"message": "No update, score is not higher"}, status=status.HTTP_200_OK)
+    player_profile.coins = coins_amount
+    player_profile.save()
+    return Response({"message": "High score updated"}, status=status.HTTP_200_OK)
+    

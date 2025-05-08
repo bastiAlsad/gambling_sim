@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'squarebrain.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gambling_sim.settings')
 
 application = get_wsgi_application()

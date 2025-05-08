@@ -19,7 +19,7 @@ ALLOWED_HOSTS = ["*"]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'squarebrain_app.authentication.ExpiringTokenAuthentication',  # Benutze die erweiterte Authentifizierung
+        'gambling_sim_app.authentication.ExpiringTokenAuthentication',  # Benutze die erweiterte Authentifizierung
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders', 
-    'squarebrain_app'
+    'gambling_sim_app'
 ]
 
 MIDDLEWARE = [
@@ -56,11 +56,10 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "*"
-    ]
+CORS_ALLOW_ALL_ORIGINS = True
 
-ROOT_URLCONF = 'squarebrain.urls'
+
+ROOT_URLCONF = 'gambling_sim.urls'
 
 TEMPLATES = [
     {
@@ -78,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'squarebrain.wsgi.application'
+WSGI_APPLICATION = 'gambling_sim.wsgi.application'
 
 
 # Database
@@ -93,7 +92,7 @@ env = environ.Env()
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
 SECRET_KEY = env("SECRET_KEY")
-PRODUCTION = env.bool("PRODUCTION", default=True)
+PRODUCTION = env.bool("PRODUCTION", default=False)
 
 if PRODUCTION:
     print("Production database active")
