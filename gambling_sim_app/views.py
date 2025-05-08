@@ -65,8 +65,8 @@ def login_user(request):
 @renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def get_ranking(request):
     print("ranking funktion called")
-    players = PlayerProfile.objects.order_by('-high_score')
-    player_data = [{'username': player.user.username, 'high_score': player.high_score} for player in players]
+    players = PlayerProfile.objects.order_by('-coins')
+    player_data = [{'username': player.user.username, 'coins': player.coins} for player in players]
     print(f"player_data: {player_data}")
     return Response(player_data, status=status.HTTP_200_OK)
 
@@ -84,5 +84,5 @@ def update_coins(request):
     player_profile = models.PlayerProfile.objects.get(uid=uid)
     player_profile.coins = coins_amount
     player_profile.save()
-    return Response({"message": "High score updated"}, status=status.HTTP_200_OK)
+    return Response({"message": "Coins score updated"}, status=status.HTTP_200_OK)
     
