@@ -10,17 +10,15 @@ from .serializers import UserSerializer
 from uuid import uuid4
 from . import models
 
-# Registrierung eines neuen Benutzers und Erstellen eines Tokens
 @api_view(["POST"])
-@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
+@renderer_classes([JSONRenderer])  
 def register_user(request):
     print("register funktion called")
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()  
-        player_object = models.PlayerProfile.objects.get(user=user)  # Hole das PlayerProfile-Objekt
+        player_object = models.PlayerProfile.objects.get(user=user)  
         uid = player_object.uid
-
         token, created = ExpiringToken.objects.get_or_create(user=user)
         print(f"token: {token.key}")
         print(f"uid: {uid}")
@@ -56,8 +54,6 @@ def login_user(request):
 
 
 @api_view(["GET"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
 @renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def get_ranking(request):
     print("ranking funktion called")
@@ -66,10 +62,9 @@ def get_ranking(request):
     print(f"player_data: {player_data}")
     return Response(player_data, status=status.HTTP_200_OK)
 
+
 # Update Coins Method
 @api_view(["POST"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
 @renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def update_coins(request):
     coins_amount = request.data.get('coins_amount', None)
