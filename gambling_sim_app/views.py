@@ -8,31 +8,54 @@ from django.contrib.auth.models import User
 from .models import ExpiringToken, PlayerProfile
 from .serializers import UserSerializer
 from uuid import uuid4
-from . import models
+from django.dispatch import receiver
+from . import models  # Importiere deine Models
+from django.db.models.signals import post_save
+
+# Stelle sicher, dass ein PlayerProfile automatisch erstellt wird
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        models.PlayerProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    if hasattr(instance, 'playerprofile'):
+        instance.playerprofile.save()
 
 # Registrierung eines neuen Benutzers und Erstellen eines Tokens
 @api_view(["POST"])
-@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
+@renderer_classes([JSONRenderer])
 def register_user(request):
     print("register funktion called")
     serializer = UserSerializer(data=request.data)
+    
     if serializer.is_valid():
+        # Generiere eindeutige UID
         uid = str(uuid4())
         while models.PlayerProfile.objects.filter(uid=uid).exists():
-              uid = str(uuid4())
-        user = serializer.save()  
-        player_object = models.PlayerProfile.objects.get(user=user)  # Hole das PlayerProfile-Objekt
-        player_object.uid = uid  # Setze die UID
-        player_object.save()  # Speichere das Objekt
-
-        token, created = ExpiringToken.objects.get_or_create(user=user)
+            uid = str(uuid4())
+        
+        # Speichere den User
+        user = serializer.save()
+        
+        # Hole oder erstelle das PlayerProfile-Objekt
+        player_object, created = models.PlayerProfile.objects.get_or_create(user=user)
+        player_object.uid = uid
+        player_object.save()
+        
+        # Erstelle Token
+        token, created = models.ExpiringToken.objects.get_or_create(user=user)
+        
         print(f"token: {token.key}")
         print(f"uid: {uid}")
+        
         return Response({
             'token': token.key,
             'uid': uid,
             'message': 'User registered successfully!'
         }, status=status.HTTP_201_CREATED)
+    
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Benutzer-Login und Token erstellen
