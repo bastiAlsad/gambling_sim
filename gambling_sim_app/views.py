@@ -8,20 +8,7 @@ from django.contrib.auth.models import User
 from .models import ExpiringToken, PlayerProfile
 from .serializers import UserSerializer
 from uuid import uuid4
-from django.dispatch import receiver
 from . import models  # Importiere deine Models
-from django.db.models.signals import post_save
-
-# Stelle sicher, dass ein PlayerProfile automatisch erstellt wird
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        models.PlayerProfile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    if hasattr(instance, 'playerprofile'):
-        instance.playerprofile.save()
 
 # Registrierung eines neuen Benutzers und Erstellen eines Tokens
 @api_view(["POST"])
