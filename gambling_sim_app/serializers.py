@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import PlayerProfile
+from uuid import uuid4
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
-        PlayerProfile.objects.create(user=user)  
+        uid = str(uuid4())
+        while PlayerProfile.objects.filter(uid=uid).exists():
+            uid = str(uuid4())
+        PlayerProfile.objects.create(user=user, uid=uid)
+        return user
+
         return user
 
 
