@@ -19,4 +19,4 @@ class PlayerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PlayerProfile
-        fields = ['user', 'coins']
+        fields = ['user', 'high_score']
