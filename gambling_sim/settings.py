@@ -29,6 +29,10 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_CREDENTIALS = True
 
+ALLOWED_HOSTS = {
+    'bastifriedrich.eu.pythonanywhere.com',
+}
+
 # Application definition
 
 INSTALLED_APPS = [
