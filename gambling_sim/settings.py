@@ -15,20 +15,19 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = ["*"]
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'gambling_sim_app.authentication.ExpiringTokenAuthentication',  # Benutze die erweiterte Authentifizierung
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-    ),
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
+
 # Application definition
 
 CORS_ALLOW_CREDENTIALS = True
-
 
 # Application definition
 
@@ -55,8 +54,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 
 ROOT_URLCONF = 'gambling_sim.urls'

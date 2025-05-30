@@ -54,6 +54,8 @@ def login_user(request):
 
 
 @api_view(["GET"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 @renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def get_ranking(request):
     print("ranking funktion called")
@@ -65,6 +67,8 @@ def get_ranking(request):
 
 # Update Coins Method
 @api_view(["POST"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 @renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def update_coins(request):
     coins_amount = request.data.get('coins_amount', None)
