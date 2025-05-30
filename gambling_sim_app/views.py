@@ -53,12 +53,13 @@ def login_user(request):
         return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+from rest_framework.permissions import AllowAny
+
 @api_view(["GET"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
-@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
+@permission_classes([AllowAny])
+@renderer_classes([JSONRenderer])
 def get_ranking(request):
-    print("ranking funktion called")
+    print(f"ranking funktion called: {request}")
     players = PlayerProfile.objects.order_by('-high_score')
     player_data = [{'username': player.user.username, 'high_score': player.high_score} for player in players]
     print(f"player_data: {player_data}")
