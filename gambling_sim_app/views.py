@@ -55,9 +55,7 @@ def login_user(request):
 
 from rest_framework.permissions import AllowAny
 
-@api_view(["GET"])
-@permission_classes([AllowAny])
-@renderer_classes([JSONRenderer])
+
 def get_ranking(request):
     print(f"ranking funktion called: {request}")
     players = PlayerProfile.objects.order_by('-high_score')
