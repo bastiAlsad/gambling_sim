@@ -53,7 +53,7 @@ def login_user(request):
         return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 @renderer_classes([JSONRenderer])
 @authentication_classes([TokenAuthentication])  # Optional, falls du Token prüfen willst
 @permission_classes([IsAuthenticated])
