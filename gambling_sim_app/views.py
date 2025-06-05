@@ -54,7 +54,9 @@ def login_user(request):
 
 
 @api_view(["GET"])
-@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
+@renderer_classes([JSONRenderer])
+@authentication_classes([TokenAuthentication])  # Optional, falls du Token prüfen willst
+@permission_classes([IsAuthenticated])
 def get_ranking(request):
     print(f"ranking funktion called: {request}")
     players = PlayerProfile.objects.order_by('-high_score')

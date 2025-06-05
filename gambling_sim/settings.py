@@ -19,12 +19,10 @@ ALLOWED_HOSTS = ["bastifriedrich.eu.pythonanywhere.com"]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'gambling_sim_app.authentication.ExpiringTokenAuthentication',  # Benutze die erweiterte Authentifizierung
+        'gambling_sim_app.authentication.ExpiringTokenAuthentication',
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
 }
+
 # Application definition
 
 CORS_ALLOW_CREDENTIALS = True
