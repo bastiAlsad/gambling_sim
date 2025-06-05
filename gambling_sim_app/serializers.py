@@ -17,8 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
         PlayerProfile.objects.create(user=user, uid=uid)
         return user
 
-        return user
-
 
 class PlayerProfileSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()

@@ -53,9 +53,8 @@ def login_user(request):
         return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-from rest_framework.permissions import AllowAny
-
-
+@api_view(["POST"])
+@renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def get_ranking(request):
     print(f"ranking funktion called: {request}")
     players = PlayerProfile.objects.order_by('-high_score')
@@ -66,8 +65,6 @@ def get_ranking(request):
 
 # Update Coins Method
 @api_view(["POST"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
 @renderer_classes([JSONRenderer])  # Erzwinge JSON-Antwort
 def update_coins(request):
     coins_amount = request.data.get('coins_amount', None)
