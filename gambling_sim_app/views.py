@@ -59,8 +59,8 @@ def login_user(request):
 @permission_classes([IsAuthenticated])
 def get_ranking(request):
     print(f"ranking funktion called: {request}")
-    players = PlayerProfile.objects.order_by('-high_score')
-    player_data = [{'username': player.user.username, 'high_score': player.high_score} for player in players]
+    players = PlayerProfile.objects.order_by('-coins')
+    player_data = [{'username': player.user.username, 'coins': player.coins} for player in players]
     print(f"player_data: {player_data}")
     return Response(player_data, status=status.HTTP_200_OK)
 
